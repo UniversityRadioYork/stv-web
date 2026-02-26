@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"log"
+	text_template "text/template"
 	"time"
 )
 
@@ -23,7 +24,8 @@ const (
 	AdminErrorTemplate        Template = "adminError.tmpl"
 	ElectionTemplate          Template = "election.tmpl"
 	ElectionsTemplate         Template = "elections.tmpl"
-	EmailTemplate             Template = "email.tmpl"
+	HtmlEmailTemplate         Template = "email.tmpl"
+	PlainEmailTemplate        Template = "email_plain.tmpl"
 	ErrorTemplate             Template = "error.tmpl"
 	HomeTemplate              Template = "home.tmpl"
 	QRTemplate                Template = "qr.tmpl"
@@ -73,6 +75,10 @@ func (t *Templater) RenderEmail(emailTemplate Template) *template.Template {
 	return template.Must(template.New("email.tmpl").ParseFS(tmpls, emailTemplate.GetString()))
 }
 
+func (t *Templater) RenderPlainEmail(emailTemplate Template) *text_template.Template {
+	return text_template.Must(text_template.New("email_plain.tmpl").ParseFS(tmpls, emailTemplate.GetString()))
+}
+
 // This section is for go template linter
 var (
 	AllTemplates = [][]string{
@@ -82,6 +88,7 @@ var (
 		{"election.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},
 		{"elections.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},
 		{"email.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},
+		{"email_plain.tmpl"},
 		{"error.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},
 		{"home.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},
 		{"qr.tmpl", "_base.tmpl", "_top.tmpl", "_footer.tmpl"},

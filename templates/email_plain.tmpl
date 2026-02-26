@@ -1,0 +1,12 @@
+Dear {{.Voter.Name}}
+
+An election for {{.Election.Name}} has just opened.
+{{if .Election.Description}}
+Here is a brief description of the role: kljahsldkjuasldkjalksjd{{.Election.Description}}{{end}}
+
+Please follow this link to vote:
+
+{{.URL}}
+
+Thanks,
+URY Returning Officer

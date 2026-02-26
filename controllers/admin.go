@@ -412,10 +412,11 @@ func (r *AdminRepo) sendEmailThread(voters []*storage.Voter, election *storage.E
 			}
 
 			file := mail.Mail{
-				Subject: "YSTV - Vote for (" + election.GetName() + ")",
-				Tpl:     r.controller.Template.RenderEmail(templates.EmailTemplate),
-				To:      voter.GetEmail(),
-				From:    "YSTV Elections <stv@ystv.co.uk>",
+				Subject:  "[URY] Vote for " + election.GetName() + "",
+				HtmlTpl:  r.controller.Template.RenderEmail(templates.HtmlEmailTemplate),
+				PlainTpl: r.controller.Template.RenderPlainEmail(templates.PlainEmailTemplate),
+				To:       voter.GetEmail(),
+				From:     "URY Elections <noreply@ury.org.uk>",
 				TplData: struct {
 					Election struct {
 						Name        string

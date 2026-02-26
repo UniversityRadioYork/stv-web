@@ -1,4 +1,4 @@
-{{define "title"}}YSTV Elections - Home{{end}}
+{{define "title"}}URY Elections - Home{{end}}
 {{define "content"}}
     <div class="container prevent-select">
         <div class="card">
@@ -7,11 +7,16 @@
                     If you are an administrator, then you'll know where to go, but if you're a voter,
                     then you will be emailed a link that will take you to the correct election.</p>
                 {{if .AllowRegistration}}
-                    <br><br>
-                    <p>If you have not registered to vote, then use the link below to sign up to vote.<br>
-                    <a href="{{.URL}}">{{.URL}}</a></p>
+                    <br>
+                    <p>
+                        If you have not registered to vote, then use the link below to sign up to vote.
+                    </p>
+                    <br>
+                    <p>
+                        <a class="button is-link" href="/registration">Register to vote!</a>
+                    </p>
                 {{end}}
             </div>
         </div>
-    </div><br><br><br>
+    </div>
 {{end}}

@@ -1,3 +1,6 @@
+> [!NOTE]
+> This is URY's fork of [YSTV stv-web](https://github.com/ystv/stv-web), with patches and tweaks for our use.
+
 # stv-web
 Single Transferable Vote web application
 

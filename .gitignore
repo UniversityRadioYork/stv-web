@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+stv-web
 
 # Test binary, built with `go test -c`
 *.test
@@ -16,3 +17,12 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 /templates/tmp/
+
+# config file
+/toml/config.toml
+
+# database
+/db
+
+# nix
+/.direnv

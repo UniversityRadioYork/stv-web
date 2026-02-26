@@ -29,10 +29,8 @@ func (r *HomeRepo) Home(c echo.Context) error {
 	}
 	data := struct {
 		AllowRegistration bool
-		URL               string
 	}{
 		AllowRegistration: allow,
-		URL:               "https://" + r.controller.DomainName + "/registration",
 	}
 	err = r.controller.Template.RenderTemplate(c.Response().Writer, data, templates.HomeTemplate)
 	if err != nil {

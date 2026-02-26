@@ -1,171 +1,180 @@
-{{define "title"}}YSTV Elections - Voters list{{end}}
+{{define "title"}}URY Elections - Voters list{{end}}
 {{define "content"}}
-    <div class="container">
-        <div class="tabs is-toggle is-toggle-rounded">
-            <ul>
-                <li>
-                    <a href="/admin">
-                        <span>Admin Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/admin/elections">
-                        <span>Elections</span>
-                    </a>
-                </li>
-                <li class="is-active">
-                    <a href="/admin/voters">
-                        <span>Voters</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="card prevent-select">
-            <div class="card-content">
-                <p>Below is a list of voters, you can remove voters if they are no longer taking part, below the
-                    table is where you can add more voters!</p>
-                <br>
-                {{if .Error}}
-                    An error occurred: {{.Error}}<br>
-                {{end}}
-                <table class="table is-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Remove</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {{range .Voters}}
-                        <tr>
-                            <td>{{.Name}}</td>
-                            <td>{{.Email}}</td>
-                            <td><a class="button is-danger" onclick="removeVoterModal('{{.Email}}', '{{.Name}}')">Remove</a></td>
-                        </tr>
-                    {{end}}
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Remove</th>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="card prevent-select">
-            <div class="card-content">
-                <p>The current status of the registration page is {{if .AllowRegistration}}enabled{{else}}disabled{{end}}!<br>
-                Press the button below to change this.</p><br>
-                <form id="registrationToggleForm" action="/admin/voters/registration" method="post">
-                    <a class="button is-link" onclick="toggleRegistration()">Toggle Registration</a>
-                </form>
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="card prevent-select">
-            <div class="card-content">
-                <p>Enter the name and the email of the voter, they will be emailed a link of an election when one
-                    opens.</p>
-                <br>
-                <form id="addVoter" action="/admin/voters" method="post" style="max-width: 500px">
-                    <div class="field">
-                        <label class="label" for="name">Name</label>
-                        <div class="control">
-                            <input class="input" type="text" id="name" name="name" placeholder="Enter name" value="">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label" for="email">Email</label>
-                        <div class="control">
-                            <input class="input" type="email" placeholder="Enter email" id="email" name="email"
-                                   onkeyup="ValidateEmail()" value="">
-                        </div>
-                        <p class="help is-danger" id="emailAlert"></p>
-                    </div>
-                    <button class="button is-link" onclick="submitNewVoter()">Add voter</button>
-                </form>
-            </div>
-        </div>
-        <br><br><br>
-        <div id="removeVoterModal" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content">
-                                <p class="title" id="voterModalTitle"></p>
-                                <p><strong>This action cannot be undone</strong><br></p>
-                                <form id="removeVoterForm" method="post">
-                                    <button class="button is-danger" onclick="removeVoter()">Remove</button>
-                                </form>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
-        <script>
-            document.querySelectorAll(
-                ".modal-background, .modal-close,.modal-card-head .delete, .modal-card-foot .button"
-            ).forEach(($el) => {
-                const $modal = $el.closest(".modal");
-                $el.addEventListener("click", () => {
-                    $modal.classList.remove("is-active");
-                });
-            });
-
-            function toggleRegistration() {
-                document.getElementById("registrationToggleForm").submit();
-            }
-
-            let valid = false;
-
-            function submitNewVoter() {
-                if (valid) {
-                    $('#addVoter').submit();
-                }
-            }
-
-            let email = "";
-
-            function removeVoterModal(email1, name) {
-                email = email1
-                document.getElementById("removeVoterModal").classList.add("is-active");
-                document.getElementById("voterModalTitle").innerHTML = "Are you sure you want to remove (" + name + ")";
-            }
-
-            function removeVoter() {
-                document.getElementById("removeVoterForm").action = '/admin/voters/delete' + '?' + $.param({"email": email});
-                $('#removeVoterForm').submit();
-            }
-
-            function ValidateEmail() {
-                const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
-                const email = $("#email"), emailAlert = $("#emailAlert");
-                if (email.val().match(validRegex)) {
-                    emailAlert.removeClass("is-danger");
-                    emailAlert.addClass("is-success");
-                    email.removeClass("is-danger");
-                    email.addClass("is-success");
-                    emailAlert.innerText = "This email is valid";
-                    valid = true;
-                } else {
-                    emailAlert.removeClass("is-success");
-                    emailAlert.addClass("is-danger");
-                    email.removeClass("is-success");
-                    email.addClass("is-danger");
-                    emailAlert.innerText = "This email is invalid";
-                    valid = false;
-                }
-            }
-        </script>
+<div class="container">
+    <div class="tabs is-toggle is-toggle-rounded">
+        <ul>
+            <li>
+                <a href="/admin">
+                    <span>Admin Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/elections">
+                    <span>Elections</span>
+                </a>
+            </li>
+            <li class="is-active">
+                <a href="/admin/voters">
+                    <span>Voters</span>
+                </a>
+            </li>
+        </ul>
     </div>
+    <div class="card prevent-select">
+        <div class="card-content">
+            <h2 class="title is-2">Registered voters</h2>
+            {{if .Error}}
+            An error occurred: {{.Error}}<br>
+            {{end}}
+            <table class="table is-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .Voters}}
+                    <tr>
+                        <td>{{.Name}}</td>
+                        <td>{{.Email}}</td>
+                        <td><a class="button is-danger" onclick="removeVoterModal('{{.Email}}', '{{.Name}}')">Remove</a>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="card prevent-select">
+        <div class="card-content">
+            <h2 class="title is-2">Registration page</h2>
+
+            <p>The registration page is currently {{if
+                .AllowRegistration}}enabled{{else}}disabled{{end}}!</p>
+            <br>
+            <form id="registrationToggleForm" action="/admin/voters/registration" method="post">
+                <a class="button is-link" onclick="toggleRegistration()">Toggle Registration</a>
+            </form>
+            {{if .AllowRegistration}}
+            <br>
+            <p>
+                Show people <a href="/registration/qr">the QR code</a> so that they can register!
+            </p>
+            {{end}}
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="card prevent-select">
+        <div class="card-content">
+            <h2 class="title is-2">Manual registration</h2>
+            <p>Enter the name and the email of the voter, they will be emailed a link of an election when one
+                opens.</p>
+            <br>
+            <form id="addVoter" action="/admin/voters" method="post" style="max-width: 500px">
+                <div class="field">
+                    <label class="label" for="name">Name</label>
+                    <div class="control">
+                        <input class="input" type="text" id="name" name="name" placeholder="Enter name" value="">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="email">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" placeholder="Enter email" id="email" name="email"
+                            onkeyup="ValidateEmail()" value="">
+                    </div>
+                    <p class="help is-danger" id="emailAlert"></p>
+                </div>
+                <button class="button is-link" onclick="submitNewVoter()">Add voter</button>
+            </form>
+        </div>
+    </div>
+    <br><br><br>
+    <div id="removeVoterModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p class="title" id="voterModalTitle"></p>
+                            <p><strong>This action cannot be undone</strong><br></p>
+                            <form id="removeVoterForm" method="post">
+                                <button class="button is-danger" onclick="removeVoter()">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <script>
+        document.querySelectorAll(
+            ".modal-background, .modal-close,.modal-card-head .delete, .modal-card-foot .button"
+        ).forEach(($el) => {
+            const $modal = $el.closest(".modal");
+            $el.addEventListener("click", () => {
+                $modal.classList.remove("is-active");
+            });
+        });
+
+        function toggleRegistration() {
+            document.getElementById("registrationToggleForm").submit();
+        }
+
+        let valid = false;
+
+        function submitNewVoter() {
+            if (valid) {
+                $('#addVoter').submit();
+            }
+        }
+
+        let email = "";
+
+        function removeVoterModal(email1, name) {
+            email = email1
+            document.getElementById("removeVoterModal").classList.add("is-active");
+            document.getElementById("voterModalTitle").innerHTML = "Are you sure you want to remove (" + name + ")";
+        }
+
+        function removeVoter() {
+            document.getElementById("removeVoterForm").action = '/admin/voters/delete' + '?' + $.param({ "email": email });
+            $('#removeVoterForm').submit();
+        }
+
+        function ValidateEmail() {
+            const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
+            const email = $("#email"), emailAlert = $("#emailAlert");
+            if (email.val().match(validRegex)) {
+                emailAlert.removeClass("is-danger");
+                emailAlert.addClass("is-success");
+                email.removeClass("is-danger");
+                email.addClass("is-success");
+                emailAlert.innerText = "This email is valid";
+                valid = true;
+            } else {
+                emailAlert.removeClass("is-success");
+                emailAlert.addClass("is-danger");
+                email.removeClass("is-success");
+                email.addClass("is-danger");
+                emailAlert.innerText = "This email is invalid";
+                valid = false;
+            }
+        }
+    </script>
+</div>
 {{end}}

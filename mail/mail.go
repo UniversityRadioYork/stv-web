@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	text_template "text/template"
 	"time"
 
 	mail "github.com/xhit/go-simple-mail/v2"
@@ -41,7 +42,8 @@ type (
 		From        string
 		Error       error
 		UseDefaults bool
-		Tpl         *template.Template
+		HtmlTpl     *template.Template
+		PlainTpl    *text_template.Template
 		TplData     interface{}
 	}
 )
@@ -112,10 +114,15 @@ func (m *Mailer) SendMail(item Mail) error {
 		bcc = item.Bcc
 		from = item.From
 	}
-	body := bytes.Buffer{}
-	err = item.Tpl.Execute(&body, item.TplData)
+	htmlBody := bytes.Buffer{}
+	plainBody := bytes.Buffer{}
+	err = item.HtmlTpl.Execute(&htmlBody, item.TplData)
 	if err != nil {
-		return fmt.Errorf("failed to exec tpl: %w", err)
+		return fmt.Errorf("failed to exec html tpl: %w", err)
+	}
+	err = item.PlainTpl.Execute(&plainBody, item.TplData)
+	if err != nil {
+		return fmt.Errorf("failed to exec plain tpl: %w", err)
 	}
 	email := mail.NewMSG()
 	email.SetFrom(from).AddTo(to).SetSubject(item.Subject)
@@ -125,7 +132,8 @@ func (m *Mailer) SendMail(item Mail) error {
 	if len(item.Bcc) != 0 {
 		email.AddBcc(bcc...)
 	}
-	email.SetBody(mail.TextHTML, body.String())
+	email.SetBody(mail.TextPlain, plainBody.String())
+	email.AddAlternative(mail.TextHTML, htmlBody.String())
 	if email.Error != nil {
 		return fmt.Errorf("failed to set mail data: %w", email.Error)
 	}

@@ -50,7 +50,11 @@ func (r *RegistrationRepo) QR(c echo.Context) error {
 		return c.Redirect(http.StatusTemporaryRedirect, "/")
 	}
 
-	err = r.controller.Template.RenderTemplate(c.Response().Writer, nil, templates.QRTemplate)
+	err = r.controller.Template.RenderTemplate(c.Response().Writer, struct {
+		URL string
+	}{
+		URL: "https://" + r.controller.DomainName + "/registration",
+	}, templates.QRTemplate)
 	if err != nil {
 		return err
 	}

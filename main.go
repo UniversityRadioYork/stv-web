@@ -150,7 +150,7 @@ func main() {
 
 			mailer.Defaults = mail.Defaults{
 				DefaultTo:   config.Mail.DefaultTo,
-				DefaultFrom: "YSTV STV <stv@ystv.co.uk>",
+				DefaultFrom: "URY Elections <noreply@ury.org.uk>",
 			}
 		}
 	}
@@ -185,7 +185,7 @@ func main() {
 		Mailer: mailer,
 	})
 
-	log.Printf("YSTV STV voting site: %s, commit: %s, version: %s\n", config.Server.Address, Commit, Version)
+	log.Printf("URY STV voting site: %s, commit: %s, version: %s\n", config.Server.Address, Commit, Version)
 
 	err = router1.Start()
 	if err != nil {
