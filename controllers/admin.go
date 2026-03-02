@@ -507,7 +507,9 @@ func (r *AdminRepo) CloseElection(c echo.Context) error {
 		ballotsVoting = append(ballotsVoting, voting.NewBallot(c2))
 	}
 
-	electionResults, err := voting.SingleTransferableVote(candidates, ballotsVoting, election.Seats, voting.DefaultSingleTransferableVoteOptions())
+	seats := min(uint64(len(candidatesStore)), election.Seats)
+
+	electionResults, err := voting.SingleTransferableVote(candidates, ballotsVoting, seats, voting.DefaultSingleTransferableVoteOptions())
 	if err != nil {
 		return r.errorHandle(c, fmt.Errorf("election failed: %w", err))
 	}
@@ -542,7 +544,7 @@ func (r *AdminRepo) CloseElection(c echo.Context) error {
 	}
 	winners := electionResults.GetWinners()
 
-	if uint64(len(winners)) != election.Seats {
+	if uint64(len(winners)) != seats {
 		return r.errorHandle(c, fmt.Errorf("invalid abount of winners"))
 	}
 
