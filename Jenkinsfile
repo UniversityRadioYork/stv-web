@@ -9,10 +9,6 @@ pipeline {
     label 'docker'
   }
 
-  environment {
-    REGISTRY_ENDPOINT = credentials('docker-registry-endpoint')
-  }
-
   stages {
     stage('Build image') {
       steps {
