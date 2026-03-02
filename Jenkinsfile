@@ -33,5 +33,15 @@ pipeline {
         }
       }
     }
+
+    stage('Deploy') {
+      steps {
+        script {
+          if (env.BRANCH_IS_PRIMARY) {
+            sh 'docker service update stv-web --force'
+          }
+        }
+      }
+    }
   }
 }
